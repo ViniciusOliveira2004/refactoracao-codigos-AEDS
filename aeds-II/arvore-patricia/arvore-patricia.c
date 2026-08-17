@@ -83,6 +83,11 @@ Arvore criaNoExterno(Chave chave){
     return arvore;
 }  
 
+/**
+Verifica se uma chave existe na árvore, e exibe o resultado no terminal.
+  @param chave Chave que será pesquisada.
+  @param arvore Árvore onde a chave será pesquisada.
+*/
 void pesquisaChave(Chave chave, Arvore arvore) { 
   if (noEExterno(arvore)) { 
     if (chave == arvore->no.chave) {
@@ -92,12 +97,14 @@ void pesquisaChave(Chave chave, Arvore arvore) {
     }
     return;
   }
+
   if (coletaBit(arvore->no.noInterno.indice, chave) == 0) {
     pesquisaChave(chave, arvore->no.noInterno.esq);
   }else {
     pesquisaChave(chave, arvore->no.noInterno.dir);
   }
 } 
+
 
 Arvore InsereEntre(Chave k, Arvore *t, int i)
 { Arvore p;
@@ -116,6 +123,7 @@ Arvore InsereEntre(Chave k, Arvore *t, int i)
     return (*t);
   }
 }
+
 
 Arvore Insere(Chave k, Arvore *t)
 { Arvore p;
