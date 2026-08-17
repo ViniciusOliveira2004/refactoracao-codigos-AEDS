@@ -26,18 +26,18 @@ typedef struct No {
 } No;
 
 /**
-Retorna o i-ésimo bit da chave "chave" a partir da esquerda
-  @param i Número do bit que será retornado
-  @param chave Chave onde seja coletado o bit de número "i"
-  @returns Retorna o bit i da chave "chave"
+Retorna o bit "indice" da chave "chave" a partir da esquerda
+  @param indice Indice do bit que será retornado
+  @param chave Chave onde seja coletado o bit de número "indice"
+  @returns Retorna o bit "indice" da chave "chave"
 */
-Bit coletaBit(Indice i, Chave chave) {
+Bit coletaBit(Indice indice, Chave chave) {
   int bit;
-  if (i == 0) {
+  if (indice == 0) {
     return 0;
   } else { 
     bit = chave;
-    for (int j = 1; j <= TAMANHO_CHAVE - i; j++) {
+    for (int j = 1; j <= TAMANHO_CHAVE - indice; j++) {
       bit /= 2;
     }
     return bit & 1;
@@ -65,7 +65,7 @@ Arvore criaNoInterno(int indice, Arvore *esq,  Arvore *dir) {
   arvore = (Arvore)malloc(sizeof(No));
   arvore->tipo = Interno; 
   arvore->no.noInterno.esq = *esq;
-  arvore->no.noInterno.dir = *dir; 
+  arvore->no.noInterno.dir = *dir;
   arvore->no.noInterno.indice = indice; 
   return arvore;
 } 
@@ -76,11 +76,11 @@ Cria um nó externo, alocando memória para ele e preenchendo seus campos.
   @returns Um ponteiro para o nó externo recém-criado.
 */
 Arvore criaNoExterno(Chave chave){ 
-    Arvore arvore;
-    arvore = (Arvore) malloc(sizeof(No));
-    arvore->tipo = Externo;
-    arvore->no.chave = chave; 
-    return arvore;
+  Arvore arvore;
+  arvore = (Arvore) malloc(sizeof(No));
+  arvore->tipo = Externo;
+  arvore->no.chave = chave; 
+  return arvore;
 }  
 
 /**
@@ -100,50 +100,69 @@ void pesquisaChave(Chave chave, Arvore arvore) {
 
   if (coletaBit(arvore->no.noInterno.indice, chave) == 0) {
     pesquisaChave(chave, arvore->no.noInterno.esq);
-  }else {
+  } else {
     pesquisaChave(chave, arvore->no.noInterno.dir);
   }
 } 
 
-
-Arvore InsereEntre(Chave k, Arvore *t, int i)
-{ Arvore p;
-  if (noEExterno(*t) || i < (*t)->no.noInterno.indice) 
-  { /* cria um novo no externo */
-    p = criaNoExterno(k);
-    if (coletaBit(i, k) == 1) 
-    return (criaNoInterno(i, t, &p));
-    else return (criaNoInterno(i, &p, t));
-  } 
-  else 
-  { if (coletaBit((*t)->no.noInterno.indice, k) == 1)
-    (*t)->no.noInterno.dir = InsereEntre(k,&(*t)->no.noInterno.dir,i);
-    else
-    (*t)->no.noInterno.esq = InsereEntre(k,&(*t)->no.noInterno.esq,i);
-    return (*t);
+/**
+Função auxiliar para inserir uma chave na árvore, criando nós internos e externos conforme necessário.
+  @param chave Chave que será inserida.
+  @param arvore Árvore onde a chave será inserida.
+  @returns Um ponteiro para a árvore atualizada após a inserção da chave.
+*/
+Arvore insereChaveEntre(Chave chave, Arvore *arvore, int indice) { 
+  Arvore arvoreAuxiliar;
+  if (noEExterno(*arvore) || indice < (*arvore)->no.noInterno.indice) { 
+    /* Cria um novo nó externo */
+    arvoreAuxiliar = criaNoExterno(chave);
+    if (coletaBit(indice, chave) == 1) {
+      return criaNoInterno(indice, arvore, &arvoreAuxiliar);
+    } else {
+      return criaNoInterno(indice, &arvoreAuxiliar, arvore);
+    }
+  } else { 
+    if (coletaBit((*arvore)->no.noInterno.indice, chave) == 1) {
+      (*arvore)->no.noInterno.dir = insereChaveEntre(chave, &(*arvore)->no.noInterno.dir, indice);
+    } else {
+      (*arvore)->no.noInterno.esq = insereChaveEntre(chave, &(*arvore)->no.noInterno.esq, indice);
+    }
+    return (*arvore);
   }
 }
 
-
-Arvore Insere(Chave k, Arvore *t)
-{ Arvore p;
+/**
+Insere uma chave na árvore, criando nós internos e externos conforme necessário.
+  @param chave Chave que será inserida.
+  @param arvore Árvore onde a chave será inserida.
+  @returns Um ponteiro para a árvore atualizada após a inserção da chave.
+*/
+Arvore insereChave(Chave chave, Arvore *arvore) { 
+  Arvore arvoreAuxiliar;
   int i;
-  if (*t == NULL) 
-  return (criaNoExterno(k));
-  else 
-  { p = *t;
-    while (!noEExterno(p)) 
-      { if (coletaBit(p->no.noInterno.indice, k) == 1)
-        p = p->no.noInterno.dir;
-        else p = p->no.noInterno.esq;
+  if (*arvore == NULL) {
+    return (criaNoExterno(chave));
+  } else {
+    arvoreAuxiliar = *arvore;
+    while (!noEExterno(arvoreAuxiliar)) { 
+      if (coletaBit(arvoreAuxiliar->no.noInterno.indice, chave) == 1) {
+        arvoreAuxiliar = arvoreAuxiliar->no.noInterno.dir;
+      } else {
+        arvoreAuxiliar = arvoreAuxiliar->no.noInterno.esq;
       }
-    /* acha o primeiro bit diferente */
+    }
+
     i = 1;
-    while ((i <= TAMANHO_CHAVE) & (coletaBit((int)i, k) == coletaBit((int)i, p->no.chave))) 
+    while ((i <= TAMANHO_CHAVE) & (coletaBit(i, chave) == coletaBit(i, arvoreAuxiliar->no.chave))) {
       i++;
-    if (i > TAMANHO_CHAVE) 
-    { printf("Erro: chave ja esta na arvore\n");  return (*t); } 
-    else return (InsereEntre(k, t, i));
+    }
+
+    if (i > TAMANHO_CHAVE) { 
+      printf("Erro: chave ja esta na arvore\n");  
+      return (*arvore); 
+    } else {
+      return insereChaveEntre(chave, arvore, i);
+    }
   }
 }
 
@@ -164,10 +183,10 @@ int main(int argc, char *argv[])
       j = min + (int) ((float)(max - min) * rand()/(RAND_MAX + 1.0));
       n = vetor[k - 32]; vetor[k - 32] = vetor[j - 32]; vetor[j - 32] = n; 
     }
-  /* Insere cada chave na arvore */
+  /* insereChave cada chave na arvore */
   for (i = min; i <= max; i++) 
     { c = vetor[i - 32]; printf("Inserindo chave: %c\n", c);
-      a = Insere(c, &a);
+      a = insereChave(c, &a);
     }
   /* Gera outra permutacao aleatoria de chaves */
   for (i = min; i <= max; i++) 
