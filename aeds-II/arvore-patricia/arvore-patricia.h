@@ -9,6 +9,7 @@ typedef unsigned char Chave; /* Valor que será armazenado nos nós externos da 
 typedef unsigned char Indice; /* Índice dos nós internos da árvore */
 typedef unsigned char Bit; /* Bit 0 ou 1 (Utilizado na função de coletar um bit i de uma chave) */
 
+/* Tipos de nós da árvore */
 typedef enum {
   Interno, Externo
 } Tipo;

@@ -17,7 +17,6 @@ short noEExterno(Arvore no) {
   return no->tipo == Externo;
 }
 
-
 Arvore criaNoInterno(int indice, Arvore *esq,  Arvore *dir) { 
   Arvore arvore;
   arvore = (Arvore)malloc(sizeof(No));
@@ -137,7 +136,7 @@ int main(int argc, char *argv[]) {
 
   /* pesquisaChave cada chave na arvore */
   for (i = min; i <= max; i++) { 
-    c = vetor[i - 32]; printf("pesquisaChavendo chave: %c\n", c);
+    c = vetor[i - 32]; printf("Pesquisando chave: %c\n", c);
     pesquisaChave(c, a);
   }
   return 0;
