@@ -1,74 +1,30 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include <string.h>
-#define M 7
-#define N 7      
-#define TAMANHO_ALFABETO 256
+#include "hash.h"
 
-typedef char Chave[N];
-typedef unsigned int Pesos[N][TAMANHO_ALFABETO];
-
-typedef struct Item {
-  Chave chave;
-} Item;
-
-typedef unsigned int Indice;
-typedef struct Celula* Apontador;
-
-typedef struct Celula {
-  Item item;
-  Apontador prox;
-} Celula;
-
-typedef struct Lista {
-  Celula *primeiro, *ultimo;
-} Lista;
-
-typedef Lista Hash[M];
-
-/** Verifica se a lista `lista` está vazia, comparando o ponteiro do primeiro elemento com o ponteiro do último elemento.
- * @param lista Lista que será verificada
- * @returns 1 se a lista estiver vazia, 0 caso contrário */
 short listaEVazia(Lista lista) { 
     return lista.primeiro == lista.ultimo; 
 }
 
-/** Inicializa uma lista da tabela Hash, alocando memória para o primeiro elemento 
- *  e definindo o último elemento como o primeiro.
- * @param lista Lista que será inicializada */
 void inicializaLista(Lista *lista) {
     lista->primeiro = (Celula *)malloc(sizeof(Celula));
     lista->ultimo = lista->primeiro; 
     lista->primeiro->prox = NULL;
 }  
 
-/** Inicializa a tabela hash, criando uma lista encadeada para cada posição.
- * @param tabela Tabela hash a ser inicializada */
 void inicializaHash(Hash tabela) { 
-    for (int i = 0; i < M; i++) {
+    for (int i = 0; i < TAMANHO_HASH; i++) {
         inicializaLista(&tabela[i]);
     }
 }
 
-/** Calcula o índice da tabela hash para uma dada chave usando os pesos gerados.
- * @param chave Chave para a qual calcular o índice
- * @param pesos Tabela de pesos
- * @return Índice da tabela hash */
 Indice hash(Chave chave, Pesos pesos) { 
     unsigned int soma = 0; 
     int tamanhoChave = strlen(chave);
     for (int i = 0; i < tamanhoChave; i++) {
         soma += pesos[i][(unsigned int)chave[i]];
     }
-    return (soma % M);
+    return (soma % TAMANHO_HASH);
 }
 
-/** Pesquisa por uma chave na tabela hash.
- * @param chave Chave a ser pesquisada
- * @param pesos Tabela de pesos
- * @param tabela Tabela hash
- * @return Apontador para o item anterior da lista, ou `NULL` se não encontrado */
 Apontador pesquisaChave(Chave chave, Pesos pesos, Hash tabela) { 
     Indice i;
     Apontador apontador; // Apontador de retorno aponta para o item anterior da lista
@@ -88,10 +44,6 @@ Apontador pesquisaChave(Chave chave, Pesos pesos, Hash tabela) {
     }
 }
 
-/** Adiciona um item `item` ao final da lista `lista`, alocando memória para um novo elemento 
- * e atualizando o ponteiro do último elemento.
- * @param item Item que será adicionado
- * @param lista Lista à qual o item será adicionado */
 void insereItemLista(Item item, Lista *lista) { 
     lista->ultimo->prox = (Celula *)malloc(sizeof(Celula));
     lista->ultimo = lista->ultimo->prox; 
@@ -99,10 +51,6 @@ void insereItemLista(Item item, Lista *lista) {
     lista->ultimo->prox = NULL;
 }  
 
-/** Insere um item na tabela hash.
- * @param item Item a ser inserido
- * @param pesos Tabela de pesos
- * @param tabela Tabela hash */
 void insereItem(Item item, Pesos pesos, Hash tabela) { 
     if (pesquisaChave(item.chave, pesos, tabela) == NULL) {
         insereItemLista(item, &tabela[hash(item.chave, pesos)]);
@@ -111,11 +59,6 @@ void insereItem(Item item, Pesos pesos, Hash tabela) {
     }
 } 
 
-/** Retira um item da lista `lista`, removendo o elemento seguinte ao apontado por `anterior` e 
- * atualizando os ponteiros da lista.
- * @param anterior Ponteiro para o nó anterior ao que será removido
- * @param lista Lista da qual o item será retirado
- * @param item Ponteiro para onde o item removido será copiado */
 void retiraItemLista(Apontador anterior, Lista *lista, Item *item) {
     Apontador noRemovido; // Ponteiro para o nó que será removido
 
@@ -133,10 +76,6 @@ void retiraItemLista(Apontador anterior, Lista *lista, Item *item) {
     free(noRemovido);
 }
 
-/** Retira um item da tabela hash.
- * @param item Item a ser retirado
- * @param pesos Tabela de pesos
- * @param tabela Tabela hash */
 void retiraItem(Item item, Pesos pesos, Hash tabela){ 
     Apontador apontador = pesquisaChave(item.chave, pesos, tabela);
     if (apontador == NULL) {
@@ -146,36 +85,29 @@ void retiraItem(Item item, Pesos pesos, Hash tabela){
     }
 }
 
-/** Gera uma tabela de valores aleatórios chamada `pesos`, que será usada pela função de hash `hash()` 
- * para calcular em qual posição da tabela cada chave deve entrar. 
- * @param pesos Tabela de pesos que será preenchida com valores aleatórios */
 void geraPesos(Pesos pesos) { 
     struct timeval semente;
 
     gettimeofday(&semente, NULL); // Utilizar o tempo como semente para a funcao srand()
     srand((int)(semente.tv_sec + 1000000 * semente.tv_usec));
 
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < TAMANHO_CHAVE; i++) {
         for (int j = 0; j < TAMANHO_ALFABETO; j++) {
             pesos[i][j] = 1 + (int)(10000.0 * rand() / (RAND_MAX + 1.0));
         }
     }
 }
 
-/** Imprime a lista encadeada.
- * @param lista Lista a ser impressa */
 void imprimeLista(Lista lista) { 
     Apontador auxiliar = lista.primeiro->prox;
     while (auxiliar != NULL) { 
-        printf("%.*s ", N, auxiliar->item.chave);
+        printf("%.*s ", TAMANHO_CHAVE, auxiliar->item.chave);
         auxiliar = auxiliar->prox;
     }
 }
 
-/** Imprime a tabela hash.
- * @param tabela Tabela hash a ser impressa */
 void imprimeTabela(Hash tabela) {
-    for (int i = 0; i < M; i++) { 
+    for (int i = 0; i < TAMANHO_HASH; i++) { 
         printf("%d: ", i);
         if (!listaEVazia(tabela[i])){
             imprimeLista(tabela[i]);
@@ -184,24 +116,22 @@ void imprimeTabela(Hash tabela) {
     }
 } 
 
-/** Lê uma palavra do teclado.
- * @param p Ponteiro para a string onde a palavra será armazenada
- * @param Tam Tamanho máximo da string */
-void lerPalavra(char *p, int Tam) { 
-    char c; 
+void lerPalavra(char *string, int tamanho) { 
+    char caractere; 
     int i, j = 0;
     fflush(stdin);
-    while (((c = getchar()) != '\n') && j < Tam - 1) {
-        p[j++] = c;
-    }
-    p[j] = '\0';
 
-    while (c != '\n') { 
-        c = getchar();
+    while (((caractere = getchar()) != '\n') && j < tamanho - 1) {
+        string[j++] = caractere;
     }
-    // Desconsiderar espacos ao final da cadeia como ocorre em Pascal.
-    for (i= j - 1; (i >= 0 && p[i] == ' '); i--) { 
-        p[i] = '\0';
+    string[j] = '\0';
+
+    while (caractere != '\n') { 
+        caractere = getchar();
+    }
+
+    for (i= j - 1; (i >= 0 && string[i] == ' '); i--) { 
+        string[i] = '\0';
     }
 }
 
@@ -213,17 +143,17 @@ int main(int argc, char *argv[]) {
     inicializaHash(tabela);
     geraPesos(p);
 
-    lerPalavra(elemento.chave,N);
+    lerPalavra(elemento.chave, TAMANHO_CHAVE);
     while (strcmp(elemento.chave, "aaaaaa") != 0) { 
         insereItem(elemento, p, tabela);
-        lerPalavra(elemento.chave,N);
+        lerPalavra(elemento.chave,TAMANHO_CHAVE);
     }
 
     printf("Tabela apos insercao:\n");
     imprimeTabela(tabela);
 
     printf("Pesquisar :  ");
-    lerPalavra(elemento.chave,N);
+    lerPalavra(elemento.chave,TAMANHO_CHAVE);
     while (strcmp(elemento.chave, "aaaaaa") != 0) { 
         apontador = pesquisaChave(elemento.chave, p, tabela);
         if (apontador == NULL) { 
@@ -232,24 +162,24 @@ int main(int argc, char *argv[]) {
             printf("Pesquisa com sucesso \n");
         }
         printf("Pesquisar :  ");
-        lerPalavra(elemento.chave,N);
+        lerPalavra(elemento.chave,TAMANHO_CHAVE);
     }
 
     printf("Retirar seguintes chaves:\n");
-    lerPalavra(elemento.chave,N);
+    lerPalavra(elemento.chave,TAMANHO_CHAVE);
     while (strcmp(elemento.chave, "aaaaaa") != 0) { 
         retiraItem(elemento, p, tabela);
-        lerPalavra(elemento.chave,N);
+        lerPalavra(elemento.chave,TAMANHO_CHAVE);
     }
 
     printf("Tabela apos retiradas:\n");
     imprimeTabela(tabela);
 
     printf("Inserir de novo os elementos seguintes:\n");
-    lerPalavra(elemento.chave,N);
+    lerPalavra(elemento.chave,TAMANHO_CHAVE);
     while (strcmp(elemento.chave, "aaaaaa") != 0) { 
         insereItem(elemento, p, tabela);
-        lerPalavra(elemento.chave,N);
+        lerPalavra(elemento.chave,TAMANHO_CHAVE);
     }
 
     printf("Tabela apos novas insercoes:\n");

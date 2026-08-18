@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
   int  min = 32, max = 126;
   Chave vetor[95];
 
-  /* Gera uma permutacao aleatoria de chaves dos caracteres ASCII 32 a 126 */
+  /* Gera uma permutação aleatória de chaves dos caracteres ASCII 32 a 126 */
   struct timeval semente;
   gettimeofday(&semente, NULL);
   srand((int)(semente.tv_sec + 1000000 * semente.tv_usec));  
@@ -121,20 +121,20 @@ int main(int argc, char *argv[]) {
     n = vetor[k - 32]; vetor[k - 32] = vetor[j - 32]; vetor[j - 32] = n; 
   }
 
-  /* insereChave cada chave na arvore */
+  /* Insere cada chave na árvore */
   for (i = min; i <= max; i++) { 
     c = vetor[i - 32]; printf("Inserindo chave: %c\n", c);
     a = insereChave(c, &a);
   }
 
-  /* Gera outra permutacao aleatoria de chaves */
+  /* Gera outra permutação aleatória de chaves */
   for (i = min; i <= max; i++) { 
     k = min + (int) ((float)(max-min) * rand()/(RAND_MAX + 1.0));
     j = min + (int) ((float)(max-min) * rand()/(RAND_MAX + 1.0));
     n = vetor[k - 32]; vetor[k - 32] = vetor[j - 32]; vetor[j - 32] = n;
   }
 
-  /* pesquisaChave cada chave na arvore */
+  /* Pesquisa cada chave na árvore */
   for (i = min; i <= max; i++) { 
     c = vetor[i - 32]; printf("Pesquisando chave: %c\n", c);
     pesquisaChave(c, a);
