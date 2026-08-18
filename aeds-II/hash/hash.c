@@ -33,13 +33,22 @@ Item elemento;
 Pesos p;
 Apontador apontador;
 
-void FLVazia(Lista *Lista)
-{ Lista->primeiro = (Celula *)malloc(sizeof(Celula));
-  Lista->ultimo = Lista->primeiro; Lista->primeiro->prox = NULL;
+/**
+Inicializa uma lista da tabela Hash, alocando memória para o primeiro elemento e definindo o último elemento como o primeiro.
+  @param lista Lista que será inicializada */
+void inicializaLista(Lista *lista) {
+    lista->primeiro = (Celula *)malloc(sizeof(Celula));
+    lista->ultimo = lista->primeiro; 
+    lista->primeiro->prox = NULL;
 }  
 
-short Vazia(Lista Lista)
-{ return (Lista.primeiro == Lista.ultimo); }
+/**
+Verifica se a lista "lista" está vazia, comparando o ponteiro do primeiro elemento com o ponteiro do último elemento.
+  @param lista Lista que será verificada
+  @returns 1 se a lista estiver vazia, 0 caso contrário */
+short listaEVazia(Lista lista) { 
+    return lista.primeiro == lista.ultimo; 
+}
 
 void Ins(Item x, Lista *Lista)
 { Lista->ultimo->prox = (Celula *)malloc(sizeof(Celula));
@@ -50,7 +59,7 @@ void Ins(Item x, Lista *Lista)
 void Ret(Apontador p, Lista *Lista, Item *Item)
 {  /* -- Obs.: o item a ser retirado o seguinte ao apontado por p -- */
   Apontador q;
-  if (Vazia(*Lista) || p == NULL || p->prox == NULL) 
+  if (listaEVazia(*Lista) || p == NULL || p->prox == NULL) 
   { printf(" Erro Lista vazia ou posicao nao existe\n");
     return;
   }
@@ -100,7 +109,7 @@ Indice h(Chave Chave, Pesos p)
 
 void Inicializa(Hash T)
 { int i;
-  for (i = 0; i < M; i++) FLVazia(&T[i]);
+  for (i = 0; i < M; i++) inicializaLista(&T[i]);
 }
 
 Apontador Pesquisa(Chave Ch, Pesos p, Hash T)
@@ -108,7 +117,7 @@ Apontador Pesquisa(Chave Ch, Pesos p, Hash T)
   Indice i;
   Apontador Ap;
   i = h(Ch, p);
-  if (Vazia(T[i])) return NULL;  /* Pesquisa sem sucesso */
+  if (listaEVazia(T[i])) return NULL;  /* Pesquisa sem sucesso */
   else 
   { Ap = T[i].primeiro;
     while (Ap->prox->prox != NULL &&
@@ -146,7 +155,7 @@ void Imprime(Hash tabela)
 { int i;
   for (i = 0; i < M; i++) 
     { printf("%d: ", i);
-      if (!Vazia(tabela[i]))
+      if (!listaEVazia(tabela[i]))
       Imp(tabela[i]);
       putchar('\n');
     }
