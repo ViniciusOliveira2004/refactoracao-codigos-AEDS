@@ -43,30 +43,44 @@ void inicializaLista(Lista *lista) {
 }  
 
 /**
-Verifica se a lista "lista" está vazia, comparando o ponteiro do primeiro elemento com o ponteiro do último elemento.
+Verifica se a lista `lista` está vazia, comparando o ponteiro do primeiro elemento com o ponteiro do último elemento.
   @param lista Lista que será verificada
   @returns 1 se a lista estiver vazia, 0 caso contrário */
 short listaEVazia(Lista lista) { 
     return lista.primeiro == lista.ultimo; 
 }
 
-void Ins(Item x, Lista *Lista)
-{ Lista->ultimo->prox = (Celula *)malloc(sizeof(Celula));
-  Lista->ultimo = Lista->ultimo->prox; Lista->ultimo->item = x;
-  Lista->ultimo->prox = NULL;
+/**
+Adiciona um item `item` ao final da lista `lista`, alocando memória para um novo elemento e atualizando o ponteiro do último elemento.
+  @param item Item que será adicionado
+  @param lista Lista à qual o item será adicionado */
+void insereItemLista(Item item, Lista *lista) { 
+    lista->ultimo->prox = (Celula *)malloc(sizeof(Celula));
+    lista->ultimo = lista->ultimo->prox; 
+    lista->ultimo->item = item;
+    lista->ultimo->prox = NULL;
 }  
 
-void Ret(Apontador p, Lista *Lista, Item *Item)
-{  /* -- Obs.: o item a ser retirado o seguinte ao apontado por p -- */
-  Apontador q;
-  if (listaEVazia(*Lista) || p == NULL || p->prox == NULL) 
-  { printf(" Erro Lista vazia ou posicao nao existe\n");
-    return;
-  }
-  q = p->prox; *Item = q->item; p->prox = q->prox;
-  if (p->prox == NULL)
-  Lista->ultimo = p;
-  free(q);
+/**
+Retira um item da lista `lista`, removendo o elemento seguinte ao apontado por `anterior` e atualizando os ponteiros da lista.
+  @param anterior Ponteiro para o nó anterior ao que será removido
+  @param lista Lista da qual o item será retirado
+  @param item Ponteiro para onde o item removido será copiado */
+void retiraItemLista(Apontador anterior, Lista *lista, Item *item) {
+    Apontador noRemovido; // Ponteiro para o nó que será removido
+
+    if (listaEVazia(*lista) || anterior == NULL || anterior->prox == NULL) { 
+        printf(" Erro: Lista vazia ou posicao nao existe\n");
+        return;
+    }
+
+    noRemovido = anterior->prox; 
+    *item = noRemovido->item; 
+    anterior->prox = noRemovido->prox;
+    if (anterior->prox == NULL) {
+        lista->ultimo = anterior;
+    }
+    free(noRemovido);
 }
 
 /*
@@ -131,15 +145,16 @@ Apontador Pesquisa(Chave Ch, Pesos p, Hash T)
 
 void Insere(Item x, Pesos p, Hash T)
 { if (Pesquisa(x.chave, p, T) == NULL)
-  Ins(x, &T[h(x.chave, p)]);
+  insereItemLista(x, &T[h(x.chave, p)]);
   else printf(" Registro ja  esta  presente\n");
 } 
 
-void Retira(Item x, Pesos p, Hash T)
-{ Apontador Ap; Ap = Pesquisa(x.chave, p, T);
-  if (Ap == NULL)
-  printf(" Registro nao esta  presente\n");
-  else Ret(Ap, &T[h(x.chave, p)], &x);
+void Retira(Item x, Pesos p, Hash T){ 
+    Apontador Ap; 
+    Ap = Pesquisa(x.chave, p, T);
+    if (Ap == NULL)
+    printf(" Registro nao esta  presente\n");
+    else retiraItemLista(Ap, &T[h(x.chave, p)], &x);
 }
 
 void Imp(Lista Lista)
