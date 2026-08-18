@@ -27,51 +27,45 @@ typedef struct No {
   } no;
 } No;
 
-/**
-Retorna o bit "indice" da chave "chave" a partir da esquerda
-  @param indice Indice do bit que será retornado
-  @param chave Chave onde seja coletado o bit de número "indice"
-  @returns Retorna o bit "indice" da chave "chave" */
+/** Retorna o bit `indice` da chave `chave` a partir da esquerda
+ * @param indice Indice do bit que será retornado
+ * @param chave Chave onde seja coletado o bit de número `indice`
+ * @returns Retorna o bit `indice` da chave `chave` */
 Bit coletaBit(Indice indice, Chave chave);
 
-/**
-Verifica se o nó "no" é externo
-  @param no Nó que será verificado
-  @returns 1 se o nó for externo, e 0 se for interno */
+/** Verifica se o nó `no` é externo
+ * @param no Nó que será verificado
+ * @returns 1 se o nó for externo, e 0 se for interno */
 short noEExterno(Arvore no);
 
-/**
-Cria um nó interno, alocando memória para ele e preenchendo seus campos.    
-  @param indice O índice do bit que será usado para a decisão no nó interno.
-  @param esq Um ponteiro para a subárvore esquerda do nó interno.
-  @param dir Um ponteiro para a subárvore direita do nó interno.
-  @returns Um ponteiro para o nó interno recém-criado. */
+/** Cria um nó interno, alocando memória para ele e preenchendo seus campos.
+ * @param indice O índice do bit que será usado para a decisão no nó interno.
+ * @param esq Um ponteiro para a subárvore esquerda do nó interno.
+ * @param dir Um ponteiro para a subárvore direita do nó interno.
+ * @returns Um ponteiro para o nó interno recém-criado. */
 Arvore criaNoInterno(int indice, Arvore *esq,  Arvore *dir);
 
-/**
-Cria um nó externo, alocando memória para ele e preenchendo seus campos.    
-  @param chave Chave que será armazenada no nó.
-  @returns Um ponteiro para o nó externo recém-criado. */
+/** Cria um nó externo, alocando memória para ele e preenchendo seus campos.    
+ * @param chave Chave que será armazenada no nó.
+ * @returns Um ponteiro para o nó externo recém-criado. */
 Arvore criaNoExterno(Chave chave);
 
-/**
-Verifica se uma chave existe na árvore, e exibe o resultado no terminal.
-  @param chave Chave que será pesquisada.
-  @param arvore Árvore onde a chave será pesquisada. */
+/** Verifica se uma chave existe na árvore, e exibe o resultado no terminal.
+ * @param chave Chave que será pesquisada.
+ * @param arvore Árvore onde a chave será pesquisada. */
 void pesquisaChave(Chave chave, Arvore arvore);
 
-/**
-Função auxiliar para inserir uma chave na árvore, criando nós internos e externos conforme necessário.
-  @param chave Chave que será inserida.
-  @param arvore Árvore onde a chave será inserida.
-  @returns Um ponteiro para a árvore atualizada após a inserção da chave. */
+/** Função auxiliar para inserir uma chave na árvore, criando nós internos e externos conforme necessário.
+ * @param chave Chave que será inserida.
+ * @param arvore Árvore onde a chave será inserida.
+ * @param indice Índice do bit que será usado para a decisão no nó interno.
+ * @returns Um ponteiro para a árvore atualizada após a inserção da chave. */
 Arvore insereChaveEntre(Chave chave, Arvore *arvore, int indice);
 
-/**
-Insere uma chave na árvore, criando nós internos e externos conforme necessário.
-  @param chave Chave que será inserida.
-  @param arvore Árvore onde a chave será inserida.
-  @returns Um ponteiro para a árvore atualizada após a inserção da chave. */
+/** Insere uma chave na árvore, criando nós internos e externos conforme necessário.
+ * @param chave Chave que será inserida.
+ * @param arvore Árvore onde a chave será inserida.
+ * @returns Um ponteiro para a árvore atualizada após a inserção da chave. */
 Arvore insereChave(Chave chave, Arvore *arvore);
 
 #endif
