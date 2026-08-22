@@ -3,7 +3,7 @@
 #include <sys/time.h>
 #include <string.h>
 #define M 7
-#define N 7      
+#define N 7
 #define TAMANHO_ALFABETO 256
 
 typedef char Chave[N];

@@ -19,10 +19,13 @@ typedef struct No* Arvore;
 typedef struct No {
   Tipo tipo;
   union {
+    // Caso o nó seja interno, ele terá um índice e ponteiros para os nós esquerdo e direito
     struct {
       Indice indice;
       Arvore esq, dir;
     } noInterno ;
+
+    // Caso o nó seja externo, ele terá uma chave que será armazenada
     Chave chave;
   } no;
 } No;
