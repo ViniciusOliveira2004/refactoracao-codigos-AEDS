@@ -1,21 +1,24 @@
 #include <stdlib.h> 
 #include <stdio.h> 
 #include <sys/time.h>
+
 #ifndef ARVORE_PATRICIA_H
 #define ARVORE_PATRICIA_H
 
-#define TAMANHO_CHAVE 8   /* Define o número de bits máximo que a chave pode conter */
-typedef unsigned char Chave; /* Valor que será armazenado nos nós externos da árvore */
-typedef unsigned char Indice; /* Índice dos nós internos da árvore */
-typedef unsigned char Bit; /* Bit 0 ou 1 (Utilizado na função de coletar um bit i de uma chave) */
+#define TAMANHO_CHAVE 8   // Define o número de bits máximo que a chave pode conter
+typedef unsigned char Chave; // Valor que será armazenado nos nós externos da árvore
+typedef unsigned char Indice; // Índice dos nós internos da árvore
+typedef unsigned char Bit; // Bit 0 ou 1 (Utilizado na função de coletar um bit i de uma chave)
 
-/* Tipos de nós da árvore */
+// Tipos de nós da árvore
 typedef enum {
   Interno, Externo
 } Tipo;
 
+// Representa a árvore como um ponteiro para um nó
 typedef struct No* Arvore;
 
+// Estrutura de um nó da árvore
 typedef struct No {
   Tipo tipo;
   union {
