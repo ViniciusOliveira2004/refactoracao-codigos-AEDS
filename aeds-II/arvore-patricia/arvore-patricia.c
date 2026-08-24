@@ -53,7 +53,7 @@ void pesquisaChave(Chave chave, Arvore arvore) {
 
 Arvore insereChaveEntre(Chave chave, Arvore *arvore, int indice) { 
   if (noEExterno(*arvore) || indice < (*arvore)->no.noInterno.indice) { 
-    /* Cria um novo nó externo */
+    // Cria um novo nó externo
     Arvore arvoreAuxiliar = criaNoExterno(chave);
     if (coletaBit(indice, chave) == 1) {
       return criaNoInterno(indice, arvore, &arvoreAuxiliar);
@@ -98,42 +98,46 @@ Arvore insereChave(Chave chave, Arvore *arvore) {
 }
 
 int main(int argc, char *argv[]) { 
-  Arvore a = NULL;
-  Chave c;
-  int  i, j, k, n;
-  int  min = 32, max = 126;
-  Chave vetor[95];
+  Chave chave; // Variável auxiliar para guarda uma chave individual
+  int j, k, n; // Variáveis auxiliares para gerar uma ordem aleatória
+  int  min = 32, max = 126; // Definem definem o intervalo de caracteres usados "32 = espaço" e "126 = ~"
+  Chave vetor[95]; // Vetor que armazena os caracteres ASCII de 32 a 126 em uma ordem aleatória
 
   // Gera uma permutação aleatória de chaves dos caracteres ASCII 32 a 126
   struct timeval semente;
   gettimeofday(&semente, NULL);
   srand((int)(semente.tv_sec + 1000000 * semente.tv_usec));  
-  for (i = min; i <= max; i++) { 
+  for (int i = min; i <= max; i++) { 
     vetor[i - 32] = i; 
   }
-  for (i = min; i <= max; i++) { 
+  for (int i = min; i <= max; i++) { 
     k = min + (int) ((float)(max - min) * rand()/(RAND_MAX + 1.0)); 
     j = min + (int) ((float)(max - min) * rand()/(RAND_MAX + 1.0));
-    n = vetor[k - 32]; vetor[k - 32] = vetor[j - 32]; vetor[j - 32] = n; 
+    n = vetor[k - 32]; 
+    vetor[k - 32] = vetor[j - 32]; 
+    vetor[j - 32] = n; 
   }
 
   // Insere cada chave na árvore
-  for (i = min; i <= max; i++) { 
-    c = vetor[i - 32]; printf("Inserindo chave: %c\n", c);
-    a = insereChave(c, &a);
+  Arvore arvore = NULL;
+  for (int i = min; i <= max; i++) { 
+    chave = vetor[i - 32]; printf("Inserindo chave: %c\n", chave);
+    arvore = insereChave(chave, &arvore);
   }
 
   // Gera outra permutação aleatória de chaves
-  for (i = min; i <= max; i++) { 
+  for (int i = min; i <= max; i++) { 
     k = min + (int) ((float)(max-min) * rand()/(RAND_MAX + 1.0));
     j = min + (int) ((float)(max-min) * rand()/(RAND_MAX + 1.0));
-    n = vetor[k - 32]; vetor[k - 32] = vetor[j - 32]; vetor[j - 32] = n;
+    n = vetor[k - 32]; 
+    vetor[k - 32] = vetor[j - 32];
+    vetor[j - 32] = n;
   }
 
   // Pesquisa cada chave na árvore
-  for (i = min; i <= max; i++) { 
-    c = vetor[i - 32]; printf("Pesquisando chave: %c\n", c);
-    pesquisaChave(c, a);
+  for (int i = min; i <= max; i++) { 
+    chave = vetor[i - 32]; printf("Pesquisando chave: %c\n", chave);
+    pesquisaChave(chave, arvore);
   }
   return 0;
 } 

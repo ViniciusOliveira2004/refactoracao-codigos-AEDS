@@ -11,7 +11,7 @@ typedef int Chave; // Tipo de dado para a chave
 
 // Estrutura de um item da lista encadeada
 typedef struct {
-  Chave Chave;
+  Chave chave;
 } Item;
 
 // Ponteiro para uma célula da lista encadeada

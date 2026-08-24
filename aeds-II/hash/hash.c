@@ -26,9 +26,8 @@ Indice hash(Chave chave, Pesos pesos) {
 }
 
 Apontador pesquisaChave(Chave chave, Pesos pesos, Hash tabela) { 
-    Indice i;
     Apontador apontador; // Apontador de retorno aponta para o item anterior da lista
-    i = hash(chave, pesos);
+    Indice i = hash(chave, pesos);
     if (listaEVazia(tabela[i])) { 
         return NULL;  // Pesquisa sem sucesso
     } else {
@@ -60,13 +59,13 @@ void insereItem(Item item, Pesos pesos, Hash tabela) {
 } 
 
 void retiraItemLista(Apontador anterior, Lista *lista, Item *item) {
-    Apontador noRemovido; // Ponteiro para o nó que será removido
-
     if (listaEVazia(*lista) || anterior == NULL || anterior->prox == NULL) { 
         printf(" Erro: Lista vazia ou posicao nao existe\n");
         return;
     }
 
+    Apontador noRemovido; // Ponteiro para o nó que será removido
+    
     noRemovido = anterior->prox; 
     *item = noRemovido->item; 
     anterior->prox = noRemovido->prox;
@@ -138,14 +137,14 @@ void lerPalavra(char *string, int tamanho) {
 int main(int argc, char *argv[]) {
     Hash tabela;
     Item elemento;
-    Pesos p;
+    Pesos pesos;
     Apontador apontador;
     inicializaHash(tabela);
-    geraPesos(p);
+    geraPesos(pesos);
 
     lerPalavra(elemento.chave, TAMANHO_CHAVE);
     while (strcmp(elemento.chave, "aaaaaa") != 0) { 
-        insereItem(elemento, p, tabela);
+        insereItem(elemento, pesos, tabela);
         lerPalavra(elemento.chave,TAMANHO_CHAVE);
     }
 
@@ -155,7 +154,7 @@ int main(int argc, char *argv[]) {
     printf("Pesquisar :  ");
     lerPalavra(elemento.chave,TAMANHO_CHAVE);
     while (strcmp(elemento.chave, "aaaaaa") != 0) { 
-        apontador = pesquisaChave(elemento.chave, p, tabela);
+        apontador = pesquisaChave(elemento.chave, pesos, tabela);
         if (apontador == NULL) { 
             printf("Pesquisa sem sucesso \n");
         } else {
@@ -168,7 +167,7 @@ int main(int argc, char *argv[]) {
     printf("Retirar seguintes chaves:\n");
     lerPalavra(elemento.chave,TAMANHO_CHAVE);
     while (strcmp(elemento.chave, "aaaaaa") != 0) { 
-        retiraItem(elemento, p, tabela);
+        retiraItem(elemento, pesos, tabela);
         lerPalavra(elemento.chave,TAMANHO_CHAVE);
     }
 
@@ -178,7 +177,7 @@ int main(int argc, char *argv[]) {
     printf("Inserir de novo os elementos seguintes:\n");
     lerPalavra(elemento.chave,TAMANHO_CHAVE);
     while (strcmp(elemento.chave, "aaaaaa") != 0) { 
-        insereItem(elemento, p, tabela);
+        insereItem(elemento, pesos, tabela);
         lerPalavra(elemento.chave,TAMANHO_CHAVE);
     }
 
