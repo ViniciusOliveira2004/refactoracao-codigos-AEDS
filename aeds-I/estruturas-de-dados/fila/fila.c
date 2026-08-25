@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 
     // Gera uma permutacao aleatoria de chaves entre 1 e MAXIMO
     struct timeval semente;
-    gettimeofday(&semente,NULL);
+    gettimeofday(&semente, NULL);
     srand((unsigned int) semente.tv_usec);
     for(int i = 0; i < MAXIMO; i++) { 
         vetor[i] = i + 1;
