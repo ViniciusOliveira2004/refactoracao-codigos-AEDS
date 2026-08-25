@@ -3,88 +3,94 @@
 #include <sys/time.h>
 #define MAXIMO 10
 
-typedef int TipoChave;
+typedef int Chave;
+
 typedef struct {
-  int Chave;
-  /* outros componentes */
-} TipoItem;
-typedef struct TipoCelula *TipoApontador;
-typedef struct TipoCelula {
-  TipoItem Item;
-  TipoApontador Prox;
-} TipoCelula;
+  Chave chave;
+} Item;
+
+typedef struct Celula *Apontador;
+
+typedef struct Celula {
+  Item item;
+  Apontador prox;
+} Celula;
+
 typedef struct {
-  TipoApontador Fundo, Topo;
-  int Tamanho;
-} TipoPilha;
+  Apontador fundo, topo;
+  int tamanho;
+} Pilha;
 
-void FPVazia(TipoPilha *Pilha)
-{ Pilha->Topo = (TipoApontador) malloc(sizeof(TipoCelula));
-  Pilha->Fundo = Pilha->Topo;
-  Pilha->Topo->Prox = NULL;
-  Pilha->Tamanho = 0;
+void inicializaPilha(Pilha *pilha) { 
+    pilha->topo = (Apontador) malloc(sizeof(Celula));
+    pilha->fundo = pilha->topo;
+    pilha->topo->prox = NULL;
+    pilha->tamanho = 0;
 } 
 
-int Vazia(TipoPilha Pilha)
-{ return (Pilha.Topo == Pilha.Fundo); } 
-
-void Empilha(TipoItem x, TipoPilha *Pilha)
-{ TipoApontador Aux;
-  Aux = (TipoApontador) malloc(sizeof(TipoCelula));
-  Pilha->Topo->Item = x;
-  Aux->Prox = Pilha->Topo;
-  Pilha->Topo = Aux;
-  Pilha->Tamanho++;
+int pilhaEVazia(Pilha pilha) { 
+    return pilha.topo == pilha.fundo; 
 } 
 
-void Desempilha(TipoPilha *Pilha, TipoItem *Item)
-{ TipoApontador q;
-  if (Vazia(*Pilha)) { printf("Erro: lista vazia\n"); return; }
-  q = Pilha->Topo;
-  Pilha->Topo = q->Prox;
-  *Item = q->Prox->Item;
-  free(q);  Pilha->Tamanho--;
+void empilhaItem(Item item, Pilha *pilha) { 
+    Apontador novaCelula = (Apontador) malloc(sizeof(Celula));
+    pilha->topo->item = item;
+    novaCelula->prox = pilha->topo;
+    pilha->topo = novaCelula;
+    pilha->tamanho++;
 } 
 
-int Tamanho(TipoPilha Pilha)
-{ return (Pilha.Tamanho); } 
-
-int main(int argc, char *argv[])
-{ struct timeval t;
-  TipoPilha pilha;
-  TipoItem item;
-  int vetor[MAXIMO];
-  int i, j, k, n;
- 
-  gettimeofday(&t,NULL);
-  srand((unsigned int)t.tv_usec);
- 
-  FPVazia(&pilha);
-  
-  /*Gera uma permutacao aleatoria de chaves entre 1 e MAX*/
-  for(i = 0; i < MAXIMO; i++) vetor[i] = i + 1;
-  for(i = 0; i < MAXIMO; i++)
-    { k =  (int) (10.0*rand()/(RAND_MAX + 1.0));
-
-      j =  (int) (10.0*rand()/(RAND_MAX + 1.0));
-      n = vetor[k];
-      vetor[k] = vetor[j];
-      vetor[j] = n;
+void desempilhaItem(Item *item, Pilha *pilha) {
+    if (pilhaEVazia(*pilha)) { 
+        printf("Erro: pilha vazia\n"); 
+        return; 
     }
-  /*Empilha cada chave */
-  for (i = 0; i < MAXIMO; i++)
-    { item.Chave = vetor[i];
-      Empilha(item, &pilha);
-      printf("Empilhou: %d \n", item.Chave);
-    }
-  printf("Tamanho da pilha: %d \n", Tamanho(pilha));
-  
+    Apontador celulaRemovida = pilha->topo;
+    pilha->topo = celulaRemovida->prox;
+    *item = celulaRemovida->prox->item;
+    free(celulaRemovida);  
+    pilha->tamanho--;
+} 
 
-  /*Desempilha cada chave */
-  for(i = 0; i < MAXIMO; i++)
-    { Desempilha (&pilha,&item);
-      printf ("Desempilhou: %d \n", item.Chave);
+int tamanho(Pilha Pilha)
+{ return (Pilha.tamanho); } 
+
+int main(int argc, char *argv[]) {   
+    int vetor[MAXIMO];
+    int j, k, n;
+
+    // Gera uma permutacao aleatoria de chaves entre 1 e MAXIMO
+    struct timeval semente;
+    gettimeofday(&semente,NULL);
+    srand((unsigned int)semente.tv_usec);
+    for(int i = 0; i < MAXIMO; i++) { 
+        vetor[i] = i + 1; 
     }
-  printf("Tamanho da pilha: %d\n", Tamanho(pilha));
-  return(0);
+    for(int i = 0; i < MAXIMO; i++) { 
+        k = (int) (10.0*rand()/(RAND_MAX + 1.0));
+        j = (int) (10.0*rand()/(RAND_MAX + 1.0));
+        n = vetor[k];
+        vetor[k] = vetor[j];
+        vetor[j] = n;
+    }
+
+    // Empilha cada chave
+    Pilha pilha;
+    Item item;
+    inicializaPilha(&pilha);
+    for (int i = 0; i < MAXIMO; i++) { 
+        item.chave = vetor[i];
+        empilhaItem(item, &pilha);
+        printf("Empilhou: %d \n", item.chave);
+    }
+    printf("Tamanho da pilha: %d \n", tamanho(pilha));
+    
+    // Desempilha cada chave
+    for(int i = 0; i < MAXIMO; i++) { 
+        desempilhaItem(&item, &pilha);
+        printf ("Desempilhou: %d \n", item.chave);
+    }
+    printf("Tamanho da pilha: %d\n", tamanho(pilha));
+
+    return 0;
 }
