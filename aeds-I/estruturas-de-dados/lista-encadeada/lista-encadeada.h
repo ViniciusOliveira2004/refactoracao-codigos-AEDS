@@ -33,7 +33,7 @@ typedef struct {
 void inicializaListaVazia(Lista *lista);
 
 /** Verifica se a lista está vazia.
- *  @param Lista A lista a ser verificada
+ *  @param lista A lista a ser verificada
  *  @return 1 se a lista estiver vazia, 0 caso contrário */
 int listaEVazia(Lista lista);
 
