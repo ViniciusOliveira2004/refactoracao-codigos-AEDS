@@ -1,15 +1,21 @@
 #include "arvore-patricia.h"
 
-Bit coletaBit(Indice indice, Chave chave) {
-  if (indice == 0) {
+Bit coletaBit(Indice i, Chave chave) {
+  if (i == 0) {
     return 0;
-  } else { 
-    int bit = chave;
-    for (int j = 1; j <= TAMANHO_CHAVE - indice; j++) {
-      bit /= 2;
-    }
-    return bit & 1;
   }
+
+  /* Trazer o i-ésimo bit para a posição menos significativa (LSB):
+   cada divisão inteira por 2 desloca todos os bits uma casa à direita.
+   Repetimos (TAMANHO_CHAVE - i) vezes para que o bit desejado
+   passe a estar na posição 0 (LSB).*/
+  for (int j = 1; j <= TAMANHO_CHAVE - i; j++) {
+    chave /= 2;
+  }
+
+  /* Extrai o bit menos significativo: aplicando `& 1` obtemos
+   apenas o LSB (0 ou 1), que é o i-ésimo bit originalmente solicitado */
+  return chave & 1;
 } 
 
 short noEExterno(Arvore no) {

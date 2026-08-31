@@ -5,10 +5,16 @@
 #ifndef ARVORE_PATRICIA_H
 #define ARVORE_PATRICIA_H
 
-#define TAMANHO_CHAVE 8   // Define o número de bits máximo que a chave pode conter
-typedef unsigned char Chave; // Valor que será armazenado nos nós externos da árvore
-typedef unsigned char Indice; // Índice dos nós internos da árvore
-typedef unsigned char Bit; // Bit 0 ou 1 (Utilizado na função de coletar um bit i de uma chave)
+#define TAMANHO_CHAVE 8 // Define o número de bits máximo que a chave pode conter
+
+// Valor que será armazenado nos nós externos da árvore
+typedef unsigned char Chave; 
+
+// Índice dos nós internos da árvore
+typedef unsigned char Indice;
+
+// Bit 0 ou 1 (Utilizado na função de coletar um bit i de uma chave)
+typedef unsigned char Bit;
 
 // Tipos de nós da árvore
 typedef enum {
@@ -33,13 +39,13 @@ typedef struct No {
   } no;
 } No;
 
-/** Retorna o bit `indice` da chave `chave` a partir da esquerda
- * @param indice Indice do bit que será retornado
- * @param chave Chave onde seja coletado o bit de número `indice`
- * @returns Retorna o bit `indice` da chave `chave` */
-Bit coletaBit(Indice indice, Chave chave);
+/** Retorna o i-ésimo bit da chave `chave` a partir da esquerda
+ * @param i Índice do bit que será retornado
+ * @param chave Chave onde seja coletado o bit de número `i`
+ * @returns Retorna o bit `i` da chave `chave` */
+Bit coletaBit(Indice i, Chave chave);
 
-/** Verifica se o nó `no` é externo
+/** Verifica se um nó é externo
  * @param no Nó que será verificado
  * @returns 1 se o nó for externo, e 0 se for interno */
 short noEExterno(Arvore no);
