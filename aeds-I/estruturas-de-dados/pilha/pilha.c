@@ -1,25 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#define MAXIMO 10
-
-typedef int Chave;
-
-typedef struct {
-  Chave chave;
-} Item;
-
-typedef struct Celula *Apontador;
-
-typedef struct Celula {
-  Item item;
-  Apontador prox;
-} Celula;
-
-typedef struct {
-  Apontador fundo, topo;
-  int tamanho;
-} Pilha;
+#include "pilha.h"
 
 void inicializaPilha(Pilha *pilha) { 
     pilha->topo = (Apontador) malloc(sizeof(Celula));
@@ -52,12 +31,9 @@ void desempilhaItem(Item *item, Pilha *pilha) {
     pilha->tamanho--;
 } 
 
-int tamanho(Pilha Pilha)
-{ return (Pilha.tamanho); } 
-
 int main(int argc, char *argv[]) {   
-    int vetor[MAXIMO];
-    int j, k, n;
+    int vetor[MAXIMO]; // Vetor para armazenar as chaves a serem empilhadas
+    int j, k, n; // Variáveis auxiliares para a geração da permutação aleatória
 
     // Gera uma permutacao aleatoria de chaves entre 1 e MAXIMO
     struct timeval semente;
@@ -83,14 +59,14 @@ int main(int argc, char *argv[]) {
         empilhaItem(item, &pilha);
         printf("Empilhou: %d \n", item.chave);
     }
-    printf("Tamanho da pilha: %d \n", tamanho(pilha));
+    printf("Tamanho da pilha: %d \n", pilha.tamanho);
     
     // Desempilha cada chave
     for(int i = 0; i < MAXIMO; i++) { 
         desempilhaItem(&item, &pilha);
         printf ("Desempilhou: %d \n", item.chave);
     }
-    printf("Tamanho da pilha: %d\n", tamanho(pilha));
+    printf("Tamanho da pilha: %d\n", pilha.tamanho);
 
     return 0;
 }
