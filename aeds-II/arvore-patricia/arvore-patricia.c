@@ -58,8 +58,7 @@ void pesquisaChave(Chave chave, Arvore arvore) {
 } 
 
 Arvore insereChaveEntre(Chave chave, Arvore *arvore, int indice) { 
-  if (noEExterno(*arvore) || indice < (*arvore)->no.noInterno.indice) { 
-    // Cria um novo nó externo
+  if (noEExterno(*arvore) || indice < (*arvore)->no.noInterno.indice) {
     Arvore arvoreAuxiliar = criaNoExterno(chave);
     if (coletaBit(indice, chave) == 1) {
       return criaNoInterno(indice, arvore, &arvoreAuxiliar);
