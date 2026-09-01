@@ -1,24 +1,4 @@
-#include "select-sort.h"
-
-void selectSort(Vetor vetor, Indice tamanho) { 
-    Indice valorMinimo; // Índice do menor valor encontrado
-    Item auxiliar; // Variável auxiliar para troca de elementos
-    for(int i = 1; i < tamanho; i++)  { 
-        valorMinimo = i;
-
-        // Encontra o índice do menor elemento no subvetor não ordenado
-        for(int j = i + 1; j <= tamanho; j++) {
-            if (vetor[j].chave < vetor[valorMinimo].chave) {
-                valorMinimo = j;
-            }
-        }
-
-        // Troca o elemento atual com o menor elemento encontrado
-        auxiliar = vetor[valorMinimo]; 
-        vetor[valorMinimo] = vetor[i]; 
-        vetor[i] = auxiliar;
-    }
-}
+#include "base.h"
 
 void imprimirVetor(Vetor vetor, Indice tamanho) { 
     for (int i = 1; i <= tamanho; i++) {
@@ -77,8 +57,8 @@ int main(int argc, char *argv[]) {
     printf("Desordenado: ");
     imprimirVetor(desordenado, TAMANHO_VETOR);
 
-    printf("Selecao   ");
-    selectSort(ordenado, TAMANHO_VETOR);
+    //printf("Selecao   ");
+    //Selecao(ordenado, TAMANHO_VETOR);
     testarOrdenacao(ordenado, TAMANHO_VETOR);
     copiarValores(desordenado, ordenado, TAMANHO_VETOR);
 

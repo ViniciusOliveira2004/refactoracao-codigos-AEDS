@@ -7,7 +7,8 @@
 
 #define MAXIMO_ITEMS 10 // Define o número máximo de itens que serão inseridos na lista encadeada
 
-typedef int Chave; // Tipo de dado para a chave
+// Tipo de dado para a chave
+typedef int Chave;
 
 // Estrutura de um item da lista encadeada
 typedef struct {
