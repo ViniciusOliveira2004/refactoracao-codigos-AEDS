@@ -1,4 +1,39 @@
-#include "base.h"
+#include "shell-sort.h"
+
+void shellSort(Vetor vetor, Indice tamanho) {
+    // gap: distância entre elementos comparados (sequência de Knuth)
+    int gap = 1;
+    do {
+        gap = gap * 3 + 1;
+    } while (gap < tamanho);
+
+    // Reduz o gap a cada iteração e aplica um insertion sort com esse gap
+    do {
+        gap /= 3;
+
+        for (int i = gap + 1; i <= tamanho; i++)  { 
+            // elemento: guarda temporariamente o valor que vamos inserir
+            Item elemento = vetor[i];  
+
+            // posicao: Anda para a esquerda em passos de `gap` para inserir `elemento`
+            int posicao = i;
+
+            // Enquanto o elemento `gap` posições à esquerda for maior, desloca-o para a direita
+            while (vetor[posicao - gap].chave > elemento.chave) { 
+                // Move maior para a direita
+                vetor[posicao] = vetor[posicao - gap]; 
+                posicao -= gap;
+                
+                // Se chegarmos até a borda da subsequência, pare
+                if (posicao <= gap) {
+                    break;
+                }
+            }
+            // Insere o elemento em seu lugar
+            vetor[posicao] = elemento; 
+        }
+    } while (gap != 1);
+}
 
 void imprimirVetor(Vetor vetor, Indice tamanho) { 
     for (int i = 1; i <= tamanho; i++) {
@@ -55,8 +90,8 @@ int main(int argc, char *argv[]) {
     printf("Desordenado: ");
     imprimirVetor(desordenado, TAMANHO_VETOR);
 
-    //printf("Selecao   ");
-    //Selecao(ordenado, TAMANHO_VETOR);
+    printf("Shellsort   ");
+    shellSort(ordenado, TAMANHO_VETOR);
     testarOrdenacao(ordenado, TAMANHO_VETOR);
     copiarValores(desordenado, ordenado, TAMANHO_VETOR);
 

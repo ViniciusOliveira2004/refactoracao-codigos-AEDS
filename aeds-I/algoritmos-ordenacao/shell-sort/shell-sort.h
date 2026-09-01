@@ -20,6 +20,11 @@ typedef int Indice;
 // Tipo de dados para o vetor
 typedef Item Vetor[TAMANHO_VETOR];
 
+/** Ordena o vetor usando o método Shell (gapped insertion sort).
+ *  @param vetor O vetor a ser ordenado
+ *  @param tamanho O número de elementos no vetor */
+void shellSort(Vetor vetor, Indice tamanho);
+
 /** Imprime os elementos do vetor.
  *  @param vetor O vetor a ser impresso
  *  @param tamanho O número de elementos no vetor */
