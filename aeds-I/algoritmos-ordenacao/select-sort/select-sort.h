@@ -21,9 +21,9 @@ typedef int Indice;
 typedef Item Vetor[TAMANHO_VETOR];
 
 /** Implementa o algoritmo de ordenação por seleção.
- *  @param A O vetor a ser ordenado
- *  @param n O número de elementos no vetor */
-void selectSort(Item *A, Indice n);
+ *  @param vetor O vetor a ser ordenado
+ *  @param tamanho O número de elementos no vetor */
+void selectSort(Vetor vetor, Indice tamanho);
 
 /** Imprime os elementos do vetor.
  *  @param vetor O vetor a ser impresso

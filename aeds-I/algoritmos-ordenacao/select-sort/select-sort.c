@@ -1,12 +1,9 @@
 #include "select-sort.h"
 
-void selectSort(Vetor vetor, Indice tamanho) { 
-    Indice valorMinimo; // Índice do menor valor encontrado
-    Item auxiliar; // Variável auxiliar para troca de elementos
-    for(int i = 1; i < tamanho; i++)  { 
-        valorMinimo = i;
-
+void selectSort(Vetor vetor, Indice tamanho) {
+    for(int i = 1; i < tamanho; i++)  {
         // Encontra o índice do menor elemento no subvetor não ordenado
+        Indice valorMinimo = i;
         for(int j = i + 1; j <= tamanho; j++) {
             if (vetor[j].chave < vetor[valorMinimo].chave) {
                 valorMinimo = j;
@@ -14,7 +11,7 @@ void selectSort(Vetor vetor, Indice tamanho) {
         }
 
         // Troca o elemento atual com o menor elemento encontrado
-        auxiliar = vetor[valorMinimo]; 
+        Item auxiliar = vetor[valorMinimo]; 
         vetor[valorMinimo] = vetor[i]; 
         vetor[i] = auxiliar;
     }
