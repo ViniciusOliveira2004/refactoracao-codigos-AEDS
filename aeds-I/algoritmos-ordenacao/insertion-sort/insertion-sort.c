@@ -1,20 +1,21 @@
-#include "select-sort.h"
+#include "insertion-sort.h"
 
-void selectSort(Vetor vetor, Indice tamanho) {
-    for(int i = 1; i < tamanho; i++)  {
-        // Encontra o índice do menor elemento no subvetor não ordenado
-        Indice valorMinimo = i;
-        for(int j = i + 1; j <= tamanho; j++) {
-            if (vetor[j].chave < vetor[valorMinimo].chave) {
-                valorMinimo = j;
-            }
+void insertionSort(Vetor vetor, Indice tamanho) {
+    for (int i = 2; i <= tamanho; i++) { 
+        // elemento: item que vamos inserir na posição correta
+        Item elemento = vetor[i];  
+        vetor[0] = elemento;  // sentinela: facilita a verificação do início
+
+        // posicao: índice que anda para a esquerda procurando onde inserir elemento
+        Indice posicao = i - 1;
+        while (elemento.chave < vetor[posicao].chave) { 
+            vetor[posicao + 1] = vetor[posicao];  // Move elemento maior para a direita
+            posicao--;
         }
-
-        // Troca o elemento atual com o menor elemento encontrado
-        Item auxiliar = vetor[valorMinimo]; 
-        vetor[valorMinimo] = vetor[i]; 
-        vetor[i] = auxiliar;
-    }
+        
+        // Insere elemento na posição encontrada
+        vetor[posicao + 1] = elemento;
+    } 
 }
 
 void imprimirVetor(Vetor vetor, Indice tamanho) { 
@@ -72,8 +73,8 @@ int main(int argc, char *argv[]) {
     printf("Desordenado: ");
     imprimirVetor(desordenado, TAMANHO_VETOR);
 
-    printf("Selecao   ");
-    selectSort(ordenado, TAMANHO_VETOR);
+    printf("Insercao   ");
+    insertionSort(ordenado, TAMANHO_VETOR);
     testarOrdenacao(ordenado, TAMANHO_VETOR);
     copiarValores(desordenado, ordenado, TAMANHO_VETOR);
 

@@ -34,11 +34,9 @@ double gerarNumeroAleatorio() {
 }
 
 void gerarPermutacao(Vetor vetor, Indice tamanho) {
-    Indice indiceAuxiliar;
-    Item itemAuxiliar;
     for(int i = tamanho; i > 0; i--) { 
-        indiceAuxiliar = (i * gerarNumeroAleatorio()) + 1 ;
-        itemAuxiliar = vetor[i];
+        Indice indiceAuxiliar = (i * gerarNumeroAleatorio()) + 1 ;
+        Item itemAuxiliar = vetor[i];
         vetor[i] = vetor[indiceAuxiliar];
         vetor[indiceAuxiliar] = itemAuxiliar;
     }
