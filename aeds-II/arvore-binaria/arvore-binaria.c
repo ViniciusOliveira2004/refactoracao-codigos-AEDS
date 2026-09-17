@@ -1,24 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <limits.h>
-#include <sys/time.h>
+#include "arvore-binaria.h"
 
-#define TAMANHO_VETOR  10
-
-typedef long Chave;
-
-typedef struct Registro {
-  Chave chave;
-} Registro;
-
-typedef struct No * Apontador;
-
-typedef struct No {
-  Registro registro;
-  Apontador esq, dir;
-} No;
-
-typedef Apontador Arvore;
+void inicializaArvore(Arvore *arvore) { 
+  *arvore = NULL; 
+}
 
 void pesquisaRegistro(Registro *registro, Arvore *arvore) { 
   if (*arvore == NULL) { 
@@ -57,10 +41,6 @@ void insereRegistro(Registro registro, Arvore *arvore) {
   } else {
     printf("Erro : Registro ja existe na arvore\n");
   }
-} 
-
-void inicializaArvore(Arvore *arvore) { 
-  *arvore = NULL; 
 }
 
 void removePredecessor(Apontador noRemovido, Arvore *arvore) { 
@@ -74,137 +54,127 @@ void removePredecessor(Apontador noRemovido, Arvore *arvore) {
   free(noRemovido);
 } 
 
-void retiraRegistro(Registro x, Apontador *p) {  
-  Apontador Aux;
-  
-  if (*p == NULL) { 
+void retiraRegistro(Registro registro, Arvore *arvore) {  
+  if (*arvore == NULL) { 
     printf("Erro : Registro nao esta na arvore\n");
     return;
   }
-  if (x.chave < (*p)->registro.chave) { 
-    retiraRegistro(x, &(*p)->esq); 
+
+  if (registro.chave < (*arvore)->registro.chave) { 
+    retiraRegistro(registro, &(*arvore)->esq); 
     return; 
   }
 
-  if (x.chave > (*p)->registro.chave) { 
-    retiraRegistro(x, &(*p)->dir); 
+  if (registro.chave > (*arvore)->registro.chave) { 
+    retiraRegistro(registro, &(*arvore)->dir); 
     return; 
   }
 
-  if ((*p)->dir == NULL) { 
-    Aux = *p;  
-    *p = (*p)->esq;
-    free(Aux);
+  Apontador auxiliar;
+  if ((*arvore)->dir == NULL) { 
+    auxiliar = *arvore;  
+    *arvore = (*arvore)->esq;
+    free(auxiliar);
     return;
   }
 
-  if ((*p)->esq != NULL) { 
-    removePredecessor(*p, &(*p)->esq);
+  if ((*arvore)->esq != NULL) { 
+    removePredecessor(*arvore, &(*arvore)->esq);
     return;
   }
-  Aux = *p;  *p = (*p)->dir;
-  free(Aux);
-}  
-
-void Central(Apontador p)
-{ if (p == NULL) return;
-  Central(p->esq);
-  printf("%ld\n", p->registro.chave);
-  Central(p->dir);
+  auxiliar = *arvore;  
+  *arvore = (*arvore)->dir;
+  free(auxiliar);
 } 
 
-void TestaI(No *p, int pai)
-{ if (p == NULL) return;
-  if (p->esq != NULL) 
-  { if (p->registro.chave < p->esq->registro.chave) 
-    { printf("Erro: Pai %ld menor que filho a esquerda %ld\n", p->registro.chave, 
-             p->esq->registro.chave);
+
+void verificaArvore(Arvore arvore) { 
+  if (arvore == NULL) {
+    return;
+  }
+  if (arvore->esq != NULL) { 
+    if (arvore->registro.chave < arvore->esq->registro.chave) { 
+      printf("Erro: Pai %ld menor que filho a esquerda %ld\n", arvore->registro.chave, arvore->esq->registro.chave);
       exit(1);
     }
   }
-  if (p->dir != NULL) 
-  { if (p->registro.chave > p->dir->registro.chave) 
-    { printf("Erro: Pai %ld maior que filho a direita %ld\n",  p->registro.chave, 
-             p->dir->registro.chave);
-    exit(1);
+  if (arvore->dir != NULL) { 
+    if (arvore->registro.chave > arvore->dir->registro.chave) { 
+      printf("Erro: Pai %ld maior que filho a direita %ld\n",  arvore->registro.chave, arvore->dir->registro.chave);
+      exit(1);
     }
   }
-  TestaI(p->esq, p->registro.chave);
-  TestaI(p->dir, p->registro.chave);
+  verificaArvore(arvore->esq);
+  verificaArvore(arvore->dir);
 }
 
-
-void Testa(No *p)
-{ if (p != NULL)
-  TestaI(p, p->registro.chave);
-}
-
-double rand0a1() {
-  double resultado=  (double) rand()/ RAND_MAX; /* Dividir pelo maior inteiro */
-  if(resultado>1.0) resultado = 1.0;
-  return resultado;
-}
-
-void Permut( Chave A[], int n) {
-  int i,j; Chave b;
-  for(i = n; i>0; i --) 
-    { j = (i * rand0a1());
-      b = A[i];
-      A[i] = A[j];
-      A[j] = b;
+double gerarNumeroAleatorio() { 
+    double resultado = (double) rand() / (double) RAND_MAX;
+    if (resultado > 1.0) { 
+        resultado = 1.0;
     }
+    return resultado;
 }
 
-int main(int argc, char *argv[])
-{
-  struct timeval t; 
-  No *Dicionario;
-  Registro x; 
+void gerarPermutacao(Chave vetor[], int tamanho) {
+  for(int i = tamanho; i > 0; i--) { 
+      int indiceAuxiliar = (i * gerarNumeroAleatorio());
+      Chave chaveAuxiliar = vetor[i];
+      vetor[i] = vetor[indiceAuxiliar];
+      vetor[indiceAuxiliar] = chaveAuxiliar;
+  }
+}
+
+int main(int argc, char *argv[]) {
+  // Gera uma permutação aleatoria de chaves entre 1 e TAMANHO_VETOR
   Chave vetor[TAMANHO_VETOR];
-  int i, j, k, n;
-
-  inicializaArvore(&Dicionario);
-  /* Gera uma permutação aleatoria de chaves entre 1 e MAX */
-  for (i = 0; i < TAMANHO_VETOR; i++) vetor[i] = i+1;
-  gettimeofday(&t,NULL);
-  srand((unsigned int)t.tv_usec);
-  Permut(vetor,TAMANHO_VETOR-1);
+  for (int i = 0; i < TAMANHO_VETOR; i++) {
+    vetor[i] = i+1;
+  }
+  struct timeval semente;
+  gettimeofday(&semente,NULL);
+  srand((unsigned int) semente.tv_usec);
+  gerarPermutacao(vetor,TAMANHO_VETOR-1);
   
-  /* Insere cada chave na arvore e testa sua integridade apos cada insercao */
-  for (i = 0; i < TAMANHO_VETOR; i++) 
-    { x.chave = vetor[i];
-      insereRegistro(x, &Dicionario);
-      printf("Inseriu chave: %d\n", x.chave);
-     Testa(Dicionario);
-    }
+  Arvore arvore;
+  Registro auxiliar;
+  inicializaArvore(&arvore);
+  // Insere cada chave na arvore e testa sua integridade apos cada insercao
+  for (int i = 0; i < TAMANHO_VETOR; i++) { 
+    auxiliar.chave = vetor[i];
+    insereRegistro(auxiliar, &arvore);
+    printf("Inseriu chave: %d\n", auxiliar.chave);
+    verificaArvore(arvore);
+  }
 
-  /* Retira uma chave aleatoriamente e realiza varias pesquisas */
-  for (i = 0; i <= TAMANHO_VETOR; i++) 
-    { k = (int) (10.0*rand()/(RAND_MAX+1.0));
-      n = vetor[k];
-      x.chave = n;
-      retiraRegistro(x, &Dicionario);
-      Testa(Dicionario);
-      printf("Retirou chave: %ld\n", x.chave);
-      for (j = 0; j < TAMANHO_VETOR; j++) 
-        { x.chave = vetor[(int) (10.0*rand()/(RAND_MAX+1.0))];
-          if (x.chave != n) 
-          { printf("Pesquisando chave: %ld\n", x.chave);
-            pesquisaRegistro(&x, &Dicionario);
-          }
-        }
-      x.chave = n;
-      insereRegistro(x, &Dicionario);
-      printf("Inseriu chave: %ld\n", x.chave);
-      Testa(Dicionario);
+  // Retira uma chave aleatoriamente e realiza varias pesquisas
+  for (int i = 0; i <= TAMANHO_VETOR; i++) { 
+    int k = (int) (10.0 * rand() / (RAND_MAX + 1.0));
+    int n = vetor[k];
+    auxiliar.chave = n;
+    retiraRegistro(auxiliar, &arvore);
+    verificaArvore(arvore);
+    printf("Retirou chave: %ld\n", auxiliar.chave);
+    for (int j = 0; j < TAMANHO_VETOR; j++)  { 
+      auxiliar.chave = vetor[(int) (10.0*rand()/(RAND_MAX+1.0))];
+      if (auxiliar.chave != n) { 
+        printf("Pesquisando chave: %ld\n", auxiliar.chave);
+        pesquisaRegistro(&auxiliar, &arvore);
+      }
     }
+    auxiliar.chave = n;
+    insereRegistro(auxiliar, &arvore);
+    printf("Inseriu chave: %ld\n", auxiliar.chave);
+    verificaArvore(arvore);
+  }
 
-  /* Retira a raiz da arvore ate que ela fique vazia */
-  for (i = 0; i < TAMANHO_VETOR; i++) 
-    { x.chave = Dicionario->registro.chave;
-      retiraRegistro(x, &Dicionario);
-      Testa(Dicionario);
-      printf("Retirou chave: %ld\n", x.chave);
-    }
+  // Retira a raiz da arvore ate que ela fique vazia
+  for (int i = 0; i < TAMANHO_VETOR; i++) { 
+    auxiliar.chave = arvore->registro.chave;
+    retiraRegistro(auxiliar, &arvore);
+    verificaArvore(arvore);
+    printf("Retirou chave: %ld\n", auxiliar.chave);
+  }
+
   return 0;
 } 
