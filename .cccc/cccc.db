@@ -1,0 +1,39 @@
+CCCC_Module@anonymous@@
+CCCC_Module@char@builtin@
+CCCC_ModExt@char@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@double@builtin@
+CCCC_ModExt@double@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@float@builtin@
+CCCC_ModExt@float@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@int@builtin@
+CCCC_ModExt@int@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@long@builtin@
+CCCC_ModExt@long@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@void@builtin@
+CCCC_ModExt@void@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Member@anonymous@Bit@@(TipoIndexAmp,TipoChave)@
+CCCC_MemExt@anonymous@Bit@@(TipoIndexAmp,TipoChave)@arvore-patricia.c@23@definition@F???0@LOC:10 COM:1 MVG:4@0@d@
+CCCC_MemExt@anonymous@Bit@@(TipoIndexAmp,TipoChave)@arvore-patricia.c@23@definition@F???0@LOC:10 COM:1 MVG:4@0@d@
+CCCC_Member@anonymous@CriaNoExt@@(TipoChave)@
+CCCC_MemExt@anonymous@CriaNoExt@@(TipoChave)@arvore-patricia.c@46@definition@F???0@LOC:5 COM:0 MVG:1@0@d@
+CCCC_MemExt@anonymous@CriaNoExt@@(TipoChave)@arvore-patricia.c@46@definition@F???0@LOC:5 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@CriaNoInt@@(int,TipoArvore *,TipoArvore *)@
+CCCC_MemExt@anonymous@CriaNoInt@@(int,TipoArvore *,TipoArvore *)@arvore-patricia.c@39@definition@F???0@LOC:6 COM:0 MVG:1@0@d@
+CCCC_MemExt@anonymous@CriaNoInt@@(int,TipoArvore *,TipoArvore *)@arvore-patricia.c@39@definition@F???0@LOC:6 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@EExterno@@(TipoArvore)@
+CCCC_MemExt@anonymous@EExterno@@(TipoArvore)@arvore-patricia.c@34@definition@F???0@LOC:4 COM:1 MVG:1@0@d@
+CCCC_MemExt@anonymous@EExterno@@(TipoArvore)@arvore-patricia.c@34@definition@F???0@LOC:4 COM:1 MVG:1@0@d@
+CCCC_Member@anonymous@Insere@@(TipoChave,TipoArvore *)@
+CCCC_MemExt@anonymous@Insere@@(TipoChave,TipoArvore *)@arvore-patricia.c@82@definition@F???0@LOC:20 COM:1 MVG:8@0@d@
+CCCC_MemExt@anonymous@Insere@@(TipoChave,TipoArvore *)@arvore-patricia.c@82@definition@F???0@LOC:20 COM:1 MVG:8@0@d@
+CCCC_Member@anonymous@InsereEntre@@(TipoChave,TipoArvore *,int)@
+CCCC_MemExt@anonymous@InsereEntre@@(TipoChave,TipoArvore *,int)@arvore-patricia.c@64@definition@F???0@LOC:17 COM:1 MVG:7@0@d@
+CCCC_MemExt@anonymous@InsereEntre@@(TipoChave,TipoArvore *,int)@arvore-patricia.c@64@definition@F???0@LOC:17 COM:1 MVG:7@0@d@
+CCCC_Member@anonymous@Pesquisa@@(TipoChave,TipoArvore)@
+CCCC_MemExt@anonymous@Pesquisa@@(TipoChave,TipoArvore)@arvore-patricia.c@52@definition@F???0@LOC:11 COM:0 MVG:4@0@d@
+CCCC_MemExt@anonymous@Pesquisa@@(TipoChave,TipoArvore)@arvore-patricia.c@52@definition@F???0@LOC:11 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@main@@(...)@
+CCCC_MemExt@anonymous@main@@(...)@arvore-patricia.c@104@definition@F???0@LOC:31 COM:4 MVG:6@0@d@
+CCCC_MemExt@anonymous@main@@(...)@arvore-patricia.c@104@definition@F???0@LOC:31 COM:4 MVG:6@0@d@
+CCCC_RejExt@arvore-patricia.c@1@<file scope items>@F???0@LOC:17 COM:2 MVG:0@0@r@
+CCCC_RejExt@arvore-patricia.c@1@<file scope items>@F???0@LOC:18 COM:2 MVG:0@0@r@
