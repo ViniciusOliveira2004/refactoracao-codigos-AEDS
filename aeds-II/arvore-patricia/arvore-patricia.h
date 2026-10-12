@@ -80,4 +80,10 @@ Arvore insereChaveEntre(Chave chave, Arvore *arvore, int indice);
  * @returns Um ponteiro para a árvore atualizada após a inserção da chave. */
 Arvore insereChave(Chave chave, Arvore *arvore);
 
+/** Embaralha um vetor de chaves, gerando uma permutação aleatória dos elementos.
+ * @param vetor Vetor de chaves que será embaralhado.
+ * @param min índice mínimo do intervalo de caracteres.
+ * @param max Índice máximo do intervalo de caracteres. */
+void embaralhaVetor(Chave vetor[], int min, int max);
+
 #endif
