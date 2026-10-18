@@ -1,6 +1,6 @@
 #include   <limits.h>
 #include   <stdio.h>
-#include   <openssl/rand.h>
+#include   <stdlib.h>
 #define MAXTAM 20
 
 typedef long TipoChave;
